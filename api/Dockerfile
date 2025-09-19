@@ -14,6 +14,8 @@ COPY tsconfig.json ./
 # Copia todo o código (opcional se você mapear volume no compose)
 COPY src ./src
 
+COPY .env ./.env
+
 # Expõe porta 4000 para acessar API fora do container
 EXPOSE 4000
 
