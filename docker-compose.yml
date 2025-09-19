@@ -1,50 +1,46 @@
+
 services:
   db:
     image: mysql:8.0
-    container_name: auth_mysql
-    restart: unless-stopped
+    container_name: db-entrevista
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: example_root_password
+      MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: authdb
-      MYSQL_USER: authuser
-      MYSQL_PASSWORD: authpass
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: secret
     ports:
-      - "3306:3306"
+      - "3306:3306"  # expõe MySQL para host
     volumes:
       - db_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping","-h","localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   api:
-    build:
-      context: ./api
-    container_name: auth_api
-    restart: unless-stopped
+    build: ./api
+    container_name: api-entrevista
+    restart: always
+    ports:
+      - "4000:4000"  # expõe API para host
     env_file:
       - ./api/.env
     depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - "4000:4000"
+      - db
     volumes:
-      - ./api:/usr/src/app
-    command: ["npm","run","start:prod"]
+      - ./api/src:/app/src  # hot reload
+      - /app/node_modules
 
   front:
-    build:
-      context: ./front
-    container_name: auth_front
-    restart: unless-stopped
+    build: ./front
+    container_name: front-entrevista
+    restart: always
+    ports:
+      - "3000:3000"  # expõe front para host
     env_file:
       - ./front/.env
     depends_on:
       - api
-    ports:
-      - "3000:80"
-    # static nginx image serves build output
+    volumes:
+      - ./front/src:/app/src
+      - /app/node_modules
+
 volumes:
   db_data:

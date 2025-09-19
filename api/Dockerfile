@@ -1,19 +1,21 @@
-# build stage
-FROM node:20-alpine AS build
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm ci
-COPY tsconfig.json ./
-COPY src ./src
-RUN npm run build
-
-# production stage
+# Imagem base
 FROM node:20-alpine
-WORKDIR /usr/src/app
-ENV NODE_ENV=production
+
+# Diretório de trabalho dentro do container
+WORKDIR /app
+
+# Copia package.json e package-lock.json e instala dependências
 COPY package*.json ./
-RUN npm ci --production
-COPY --from=build /usr/src/app/dist ./dist
-COPY .env .env
+RUN npm install
+
+# Copia tsconfig.json (necessário para TypeScript)
+COPY tsconfig.json ./
+
+# Copia todo o código (opcional se você mapear volume no compose)
+COPY src ./src
+
+# Expõe porta 4000 para acessar API fora do container
 EXPOSE 4000
-CMD ["node","dist/index.js"]
+
+# Comando para rodar a API (usando ts-node)
+CMD ["npx", "ts-node", "src/index.ts"]
