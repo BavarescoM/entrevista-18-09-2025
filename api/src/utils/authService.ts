@@ -11,6 +11,7 @@ export class AuthService {
   }
 
   static verifyToken(token: string) {
+    console.log("Verifying token:", token);
     return jwt.verify(token, JWT_SECRET);
   }
 

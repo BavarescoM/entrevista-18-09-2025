@@ -1,43 +1,53 @@
-import Fastify from "fastify";
+import fastifySwagger from "@fastify/swagger";
+import fastifySwaggerUi from "@fastify/swagger-ui";
 import dotenv from "dotenv";
+import Fastify from "fastify";
+import {
+  ZodTypeProvider,
+  jsonSchemaTransform,
+  validatorCompiler
+} from 'fastify-type-provider-zod';
 import { db } from "./db";
 import { AuthRoutes } from "./routes/authRoutes";
 import { UserRoutes } from "./routes/userRoutes";
-import fastifySwagger from "@fastify/swagger";
-import fastifySwaggerUi from "@fastify/swagger-ui";
 
 dotenv.config();
 
-const fastify = Fastify({ logger: true });
 const PORT = Number(process.env.PORT) || 4000;
 
 async function main() {
+  const app = Fastify({ logger: true }).withTypeProvider<ZodTypeProvider>()
+  app.setValidatorCompiler(validatorCompiler)
   await db.init();
-
-  await fastify.register(fastifySwagger, {
+  await app.register(fastifySwagger, {
     openapi: {
       info: {
         title: "API de Autenticação",
         version: "1.0.0",
         description: "API simples com signup, login e perfil protegido",
       },
+      components: {
+      securitySchemes: {
+        bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      },
     },
+    },
+    transform: jsonSchemaTransform,
   });
 
-  await fastify.register(fastifySwaggerUi, {
+  await app.register(fastifySwaggerUi, {
     routePrefix: "/docs",
     uiConfig: { docExpansion: "full" },
   });
+  await AuthRoutes(app);
+  await UserRoutes(app);
 
-  new AuthRoutes(fastify).register();
-  new UserRoutes(fastify).register();
-
-  await fastify.listen({ port: PORT, host: "0.0.0.0" });
-  fastify.log.info(`API running at http://localhost:${PORT}`);
-  fastify.log.info(`Swagger docs at http://localhost:${PORT}/docs`);
+  await app.listen({ port: PORT, host: "0.0.0.0" });
+  app.log.info(`API running at http://localhost:${PORT}`);
+  app.log.info(`Swagger docs at http://localhost:${PORT}/docs`);
 }
 
 main().catch(err => {
-  fastify.log.error(err);
+  // app.log.error(err);
   process.exit(1);
 });

@@ -1,11 +1,23 @@
 import { FastifyInstance } from "fastify";
-import { AuthController } from "../controllers/authController";
+import { AuthController  } from "../controllers/authController";
+import type { ZodTypeProvider } from 'fastify-type-provider-zod'
+import { z } from 'zod'
+import { signupSchema, loginSchema } from "../schemas/auth.schema";
 
-export class AuthRoutes {
-  constructor(private fastify: FastifyInstance) {}
+export async function AuthRoutes(app: FastifyInstance) {
+  app.withTypeProvider<ZodTypeProvider>().post("/signup", { 
+    schema: {
+    tags: ['Auth'],
+    summary: 'Create a new account',
+    body: signupSchema,       
+  }}, AuthController.signup);
 
-  register() {
-    this.fastify.post("/auth/signup", AuthController.signup);
-    this.fastify.post("/auth/login", AuthController.login);
-  }
+
+  app.withTypeProvider<ZodTypeProvider>().post("/login", { 
+    schema: {
+    tags: ['Auth'],
+    summary: 'Create a new account',
+    body: loginSchema,       
+  }}, AuthController.login);
+
 }
