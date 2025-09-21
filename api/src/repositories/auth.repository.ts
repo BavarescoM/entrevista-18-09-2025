@@ -1,10 +1,10 @@
 import { db } from "../db";
 
 export class AuthRepository {
-  static async createUser(email: string, password: string) {
+  static async createUser(name:string, email: string, password: string) {
     return db.pool.query(
-      "INSERT INTO users (email, password) VALUES (?, ?)",
-      [email, password]
+      "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+      [name, email, password]
     );
   }
 

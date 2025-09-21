@@ -17,13 +17,20 @@ export class Database {
   }
 
   async init() {
-    await this.pool.query(`
+    try {
+      console.log("Initializing database...");
+      await this.pool.query(`
       CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL
       )
     `);
+    } catch (err) {
+      console.error('Erro ao conectar no banco:', err);
+      process.exit(1);
+    }
   }
 }
 

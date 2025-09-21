@@ -1,13 +1,14 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { signupSchema, loginSchema } from "../schemas/auth.schema";
+import { signupSchema, loginSchema } from "../utils/auth.schema";
 import { AuthBusiness } from "../services/auth.service";
 
 export class AuthController {
   static async signup(req: FastifyRequest, reply: FastifyReply) {
     const parsed = signupSchema.parse(req.body);
-    const { email, password } = parsed;
+    const { name, email, password } = parsed;
     try {
-      await AuthBusiness.signup(email, password);
+      console.log("Signup request:", { name, email, password });
+      await AuthBusiness.signup(name, email, password);
       return reply.code(201).send({ message: "User created" });
     } catch (e: any) {
       return reply.code(400).send({ error: e.message });

@@ -2,9 +2,9 @@ import { AuthService } from "../utils/authService";
 import { AuthRepository } from "../repositories/auth.repository";
 
 export class AuthBusiness {
-  static async signup(email: string, password: string) {
+  static async signup(name:string, email: string, password: string) {
     const hashed = await AuthService.hashPassword(password);
-    await AuthRepository.createUser(email, hashed);
+    await AuthRepository.createUser(name, email, hashed);
   }
 
   static async login(email: string, password: string) {

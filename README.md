@@ -1,3 +1,10 @@
+
+Swagger 
+http://127.0.0.1:4000/docs
+criar copia /api/.env.local /api/.env
+criar copia /front/.env.local /front/.env
+
+
 # Desafio Técnico – Desenvolvedor Pleno (Full-stack Auth: Node API + React)
 
 ---
