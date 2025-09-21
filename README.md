@@ -1,15 +1,15 @@
 ## criar copia ou renomear
-    - ** /api/.env.local para /api/.env
-    - ** /front/.env.local /front/.env
+    - /api/.env.local para /api/.env
+    - /front/.env.local /front/.env
 ## Rodar     
-    - ** docker compose up --build
+    - docker compose up --build
 
 ## Api 
-    - ** http://127.0.0.1:4000/
-    - ** Swagger: http://127.0.0.1:4000/docs
+    - http://127.0.0.1:4000/
+    - Swagger: http://127.0.0.1:4000/docs
 
 ## Front
-    - ** http://127.0.0.1:3000/
+    - http://127.0.0.1:3000/
 
 ---
 
