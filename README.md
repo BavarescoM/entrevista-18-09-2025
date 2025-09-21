@@ -1,16 +1,17 @@
-# criar copia ou renomear
-    * `/api/.env.local` para `/api/.env`
-# criar copia ou renomear
-    * `/front/.env.local` `/front/.env`
-# Rodar     
-# docker compose up --build
+## criar copia ou renomear
+    - ** /api/.env.local para /api/.env
+    - ** /front/.env.local /front/.env
+## Rodar     
+    - ** docker compose up --build
 
-# api 
-http://127.0.0.1:4000/
-- Swagger: http://127.0.0.1:4000/docs
+## Api 
+    - ** http://127.0.0.1:4000/
+    - ** Swagger: http://127.0.0.1:4000/docs
 
-# front
-http://127.0.0.1:3000/
+## Front
+    - ** http://127.0.0.1:3000/
+
+---
 
 # Desafio Técnico – Desenvolvedor Pleno (Full-stack Auth: Node API + React)
 
