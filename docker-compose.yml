@@ -27,7 +27,24 @@ services:
     volumes:
       - ./api/src:/app/src
       - ./api/.env:/app/.env
-      - /app/node_modules
+    restart: unless-stopped
+
+  front:
+    build: 
+      context: ./front
+      dockerfile: Dockerfile    
+    container_name: front-entrevista
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./front/.env
+    depends_on:
+      - api
+    volumes:
+      - ./front/src:/app/src
+      - ./front/public:/app/public
+      - ./front/.env:/app/.env
+    restart: unless-stopped
 
 volumes:
   db_data:

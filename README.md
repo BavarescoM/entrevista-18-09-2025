@@ -1,9 +1,12 @@
+- criar copia /api/.env.local /api/.env
+- criar copia /front/.env.local /front/.env
 
-Swagger 
-http://127.0.0.1:4000/docs
-criar copia /api/.env.local /api/.env
-criar copia /front/.env.local /front/.env
+api 
+http://127.0.0.1:4000/
+- Swagger: http://127.0.0.1:4000/docs
 
+front
+http://127.0.0.1:3000/
 
 # Desafio Técnico – Desenvolvedor Pleno (Full-stack Auth: Node API + React)
 
@@ -86,9 +89,3 @@ Aplicação simples de **autenticação** com:
 
 - Repositório com **README** explicando:
     - Como rodar com **Docker Compose** (obrigatório).
-
-**Prazo sugerido:** 48h.
-
----
-
-Boa sorte! 🙂
