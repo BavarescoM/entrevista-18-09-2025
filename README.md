@@ -2,7 +2,7 @@
  - /api/.env.local para /api/.env
  - /front/.env.local /front/.env
 ## Rodar     
-    - docker compose up --build
+ - docker compose up --build
 
 ## Api 
  - http://127.0.0.1:4000/
