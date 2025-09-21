@@ -1,21 +1,26 @@
-# front/Dockerfile
+# Etapa 1: deps
 FROM node:20-alpine AS deps
 WORKDIR /app
-COPY package*.json ./    # isto copia os package.json do contexto atual (ou seja, precisa rodar docker build dentro de front)
+COPY package*.json ./ 
 RUN npm install
 
+# Etapa 2: build
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .       # copia todo o conteúdo do front
+COPY . . 
 RUN npm run build
 
+# Etapa 3: runner
 FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
+
+# precisa do package.json para rodar npm start
+COPY package*.json ./ 
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/next.config.js ./next.config.js
+
 EXPOSE 3000
 CMD ["npm", "start"]
