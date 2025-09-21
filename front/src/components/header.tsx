@@ -6,6 +6,7 @@ import { Button } from "./ui/button"
 
 export function Header() {
   async function handleLogout() {
+    document.cookie = "token=; path=/; max-age=0"
     localStorage.removeItem("token")
     window.location.href = "/auth/sign-in"
   }
